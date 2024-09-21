@@ -51,10 +51,11 @@ CREATE TABLE IF NOT EXISTS Game
 
 CREATE TABLE IF NOT EXISTS GameTeam
 (
+    id      INTEGER NOT NULL AUTO_INCREMENT,
     game_id INTEGER NOT NULL,
     team_id INTEGER NOT NULL,
     home    BOOLEAN NOT NULL,
-    PRIMARY KEY (game_id, team_id),
+    PRIMARY KEY (id),
     FOREIGN KEY (game_id) REFERENCES Game (id),
     FOREIGN KEY (team_id) REFERENCES Team (id)
 );
@@ -154,15 +155,13 @@ CREATE TABLE IF NOT EXISTS Statistic
 (
     id                INTEGER NOT NULL AUTO_INCREMENT,
     player_id         INTEGER NOT NULL,
-    team_id           INTEGER NOT NULL,
-    game_id           INTEGER NOT NULL,
+    game_team_id      INTEGER,
     position_id       INTEGER,
     goals_scored      INTEGER,
     auto_goals_scored INTEGER,
     fouls             INTEGER,
     PRIMARY KEY (id),
     FOREIGN KEY (player_id) REFERENCES Player (id),
-    FOREIGN KEY (game_id) REFERENCES Game (id),
-    FOREIGN KEY (position_id) REFERENCES PlayerPosition (id),
-    FOREIGN KEY (team_id) REFERENCES Team (id)
+    FOREIGN KEY (game_team_id) REFERENCES GameTeam (id),
+    FOREIGN KEY (position_id) REFERENCES PlayerPosition (id)
 );
