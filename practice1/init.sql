@@ -1,4 +1,4 @@
-CREATE TABLE Venue
+CREATE TABLE IF NOT EXISTS Stadium
 (
     id       INTEGER NOT NULL AUTO_INCREMENT,
     name     VARCHAR(220),
@@ -7,7 +7,7 @@ CREATE TABLE Venue
     PRIMARY KEY (id)
 );
 
-CREATE TABLE League
+CREATE TABLE IF NOT EXISTS League
 (
     id      INTEGER NOT NULL AUTO_INCREMENT,
     name    VARCHAR(220),
@@ -16,40 +16,50 @@ CREATE TABLE League
     PRIMARY KEY (id)
 );
 
-CREATE TABLE Team
+CREATE TABLE IF NOT EXISTS Team
 (
     id            INTEGER NOT NULL AUTO_INCREMENT,
     name          VARCHAR(220),
     home_venue_id INTEGER,
     league_id     INTEGER,
     FOREIGN KEY (league_id) REFERENCES League (id),
-    FOREIGN KEY (home_venue_id) REFERENCES Venue (id),
+    FOREIGN KEY (home_venue_id) REFERENCES Stadium (id),
     PRIMARY KEY (id)
 );
 
-CREATE TABLE Game
+CREATE TABLE IF NOT EXISTS Game
 (
-    id             INTEGER NOT NULL AUTO_INCREMENT,
-    venue_id       INTEGER,
-    time           DATETIME,
-    first_team_id  INTEGER NOT NULL,
-    second_team_id INTEGER NOT NULL,
+    id            INTEGER NOT NULL AUTO_INCREMENT,
+    venue_id      INTEGER,
+    start_time    DATETIME,
+    home_team_id  INTEGER NOT NULL,
+    guest_team_id INTEGER NOT NULL,
     PRIMARY KEY (id),
-    FOREIGN KEY (venue_id) REFERENCES Venue (id),
-    FOREIGN KEY (first_team_id) REFERENCES Team (id),
-    FOREIGN KEY (second_team_id) REFERENCES Team (id)
+    FOREIGN KEY (venue_id) REFERENCES Stadium (id),
+    FOREIGN KEY (home_team_id) REFERENCES Team (id),
+    FOREIGN KEY (guest_team_id) REFERENCES Team (id)
 );
 
-CREATE TABLE Equipment
+CREATE TABLE IF NOT EXISTS EquipmentType
 (
-    id    INTEGER                                                      NOT NULL AUTO_INCREMENT,
-    name  VARCHAR(220),
-    type  VARCHAR(220)                                                 NOT NULL,
-    state ENUM ('Новый', 'Использованный', 'Резерв', 'Вышел из строя') NOT NULL,
+    id   INTEGER NOT NULL AUTO_INCREMENT,
+    name VARCHAR(220),
     PRIMARY KEY (id)
 );
 
-CREATE TABLE GameEquipment
+CREATE TABLE IF NOT EXISTS Equipment
+(
+    id              INTEGER      NOT NULL AUTO_INCREMENT,
+    name            VARCHAR(220),
+    type_id         INTEGER NOT NULL,
+    expiration_date DATETIME,
+    games_count     INTEGER      NOT NULL,
+    is_available    BOOLEAN      NOT NULL,
+    PRIMARY KEY (id),
+    FOREIGN KEY (type_id) REFERENCES EquipmentType (id)
+);
+
+CREATE TABLE IF NOT EXISTS GameEquipment
 (
     game_id      INTEGER NOT NULL,
     equipment_id INTEGER NOT NULL,
@@ -58,20 +68,27 @@ CREATE TABLE GameEquipment
     PRIMARY KEY (game_id, equipment_id)
 );
 
+CREATE TABLE IF NOT EXISTS PlayerPosition
+(
+    id   INTEGER                                                    NOT NULL AUTO_INCREMENT,
+    name VARCHAR(100)                                               NOT NULL,
+    type ENUM ('Нападающий', 'Полузащитник', 'Защитник', 'Вратарь') NOT NULL,
+    PRIMARY KEY (id)
+);
 
-CREATE TABLE Player
+
+CREATE TABLE IF NOT EXISTS Player
 (
     id         INTEGER NOT NULL AUTO_INCREMENT,
     first_name VARCHAR(100),
     last_name  VARCHAR(100),
-    position   VARCHAR(50),
     team_id    INTEGER,
     age        INTEGER,
     FOREIGN KEY (team_id) REFERENCES Team (id),
     PRIMARY KEY (id)
 );
 
-CREATE TABLE Coach
+CREATE TABLE IF NOT EXISTS Coach
 (
     id               INTEGER NOT NULL AUTO_INCREMENT,
     first_name       VARCHAR(100),
@@ -82,17 +99,25 @@ CREATE TABLE Coach
     PRIMARY KEY (id)
 );
 
-CREATE TABLE Official
+CREATE TABLE IF NOT EXISTS OfficialRole
 (
-    id               INTEGER                                                             NOT NULL AUTO_INCREMENT,
-    first_name       VARCHAR(100),
-    last_name        VARCHAR(100),
-    role             ENUM ('Главный судья', 'Ассистент судьи', 'Инспектор', 'Секретарь') NOT NULL,
-    experience_years INTEGER,
+    id   INTEGER NOT NULL AUTO_INCREMENT,
+    name VARCHAR(100),
     PRIMARY KEY (id)
 );
 
-CREATE TABLE GameMatchOfficial
+CREATE TABLE IF NOT EXISTS Official
+(
+    id               INTEGER NOT NULL AUTO_INCREMENT,
+    first_name       VARCHAR(100),
+    last_name        VARCHAR(100),
+    role_id          INTEGER,
+    experience_years INTEGER,
+    PRIMARY KEY (id),
+    FOREIGN KEY (role_id) REFERENCES OfficialRole (id)
+);
+
+CREATE TABLE IF NOT EXISTS GameMatchOfficial
 (
     game_id     INTEGER NOT NULL,
     official_id INTEGER NOT NULL,
@@ -101,14 +126,17 @@ CREATE TABLE GameMatchOfficial
     FOREIGN KEY (official_id) REFERENCES Official (id)
 );
 
-CREATE TABLE Statistic
+CREATE TABLE IF NOT EXISTS Statistic
 (
-    id           INTEGER NOT NULL AUTO_INCREMENT,
-    player_id    INTEGER NOT NULL,
-    game_id      INTEGER NOT NULL,
-    goals_scored INTEGER,
-    fouls        INTEGER,
+    id                INTEGER NOT NULL AUTO_INCREMENT,
+    player_id         INTEGER NOT NULL,
+    game_id           INTEGER NOT NULL,
+    position_id       INTEGER,
+    goals_scored      INTEGER,
+    auto_goals_scored INTEGER,
+    fouls             INTEGER,
     PRIMARY KEY (id),
     FOREIGN KEY (player_id) REFERENCES Player (id),
-    FOREIGN KEY (game_id) REFERENCES Game (id)
+    FOREIGN KEY (game_id) REFERENCES Game (id),
+    FOREIGN KEY (position_id) REFERENCES PlayerPosition (id)
 );
