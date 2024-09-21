@@ -49,12 +49,12 @@ CREATE TABLE IF NOT EXISTS EquipmentType
 
 CREATE TABLE IF NOT EXISTS Equipment
 (
-    id              INTEGER      NOT NULL AUTO_INCREMENT,
+    id              INTEGER NOT NULL AUTO_INCREMENT,
     name            VARCHAR(220),
     type_id         INTEGER NOT NULL,
     expiration_date DATETIME,
-    games_count     INTEGER      NOT NULL,
-    is_available    BOOLEAN      NOT NULL,
+    games_count     INTEGER NOT NULL,
+    is_available    BOOLEAN NOT NULL,
     PRIMARY KEY (id),
     FOREIGN KEY (type_id) REFERENCES EquipmentType (id)
 );
@@ -130,6 +130,7 @@ CREATE TABLE IF NOT EXISTS Statistic
 (
     id                INTEGER NOT NULL AUTO_INCREMENT,
     player_id         INTEGER NOT NULL,
+    team_id           INTEGER NOT NULL,
     game_id           INTEGER NOT NULL,
     position_id       INTEGER,
     goals_scored      INTEGER,
@@ -138,5 +139,6 @@ CREATE TABLE IF NOT EXISTS Statistic
     PRIMARY KEY (id),
     FOREIGN KEY (player_id) REFERENCES Player (id),
     FOREIGN KEY (game_id) REFERENCES Game (id),
-    FOREIGN KEY (position_id) REFERENCES PlayerPosition (id)
+    FOREIGN KEY (position_id) REFERENCES PlayerPosition (id),
+    FOREIGN KEY (team_id) REFERENCES Team (id)
 );
