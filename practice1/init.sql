@@ -1,27 +1,40 @@
+DROP DATABASE dbd;
+CREATE DATABASE dbd;
+USE dbd;
+
+CREATE TABLE If NOT EXISTS Country
+(
+    id   INTEGER      NOT NULL AUTO_INCREMENT,
+    name VARCHAR(100) NOT NULL,
+    PRIMARY KEY (id)
+);
+
 CREATE TABLE IF NOT EXISTS Stadium
 (
-    id       INTEGER NOT NULL AUTO_INCREMENT,
-    name     VARCHAR(220),
-    capacity INTEGER,
-    location VARCHAR(220),
-    PRIMARY KEY (id)
+    id         INTEGER      NOT NULL AUTO_INCREMENT,
+    name       VARCHAR(220) NOT NULL,
+    capacity   INTEGER      NOT NULL,
+    country_id INTEGER      NOT NULL,
+    PRIMARY KEY (id),
+    FOREIGN KEY (country_id) REFERENCES Country (id)
 );
 
 CREATE TABLE IF NOT EXISTS League
 (
-    id      INTEGER NOT NULL AUTO_INCREMENT,
-    name    VARCHAR(220),
-    country VARCHAR(220),
-    level   INTEGER,
-    PRIMARY KEY (id)
+    id         INTEGER      NOT NULL AUTO_INCREMENT,
+    name       VARCHAR(220) NOT NULL,
+    country_id INTEGER      NOT NULL,
+    level      INTEGER      NOT NULL,
+    PRIMARY KEY (id),
+    FOREIGN KEY (country_id) REFERENCES Country (id)
 );
 
 CREATE TABLE IF NOT EXISTS Team
 (
-    id            INTEGER NOT NULL AUTO_INCREMENT,
-    name          VARCHAR(220),
+    id            INTEGER      NOT NULL AUTO_INCREMENT,
+    name          VARCHAR(220) NOT NULL,
     home_venue_id INTEGER,
-    league_id     INTEGER,
+    league_id     INTEGER      NOT NULL,
     FOREIGN KEY (league_id) REFERENCES League (id),
     FOREIGN KEY (home_venue_id) REFERENCES Stadium (id),
     PRIMARY KEY (id)
@@ -29,32 +42,38 @@ CREATE TABLE IF NOT EXISTS Team
 
 CREATE TABLE IF NOT EXISTS Game
 (
-    id            INTEGER NOT NULL AUTO_INCREMENT,
-    venue_id      INTEGER,
-    start_time    DATETIME,
-    home_team_id  INTEGER NOT NULL,
-    guest_team_id INTEGER NOT NULL,
+    id         INTEGER  NOT NULL AUTO_INCREMENT,
+    venue_id   INTEGER  NOT NULL,
+    start_time DATETIME NOT NULL,
     PRIMARY KEY (id),
-    FOREIGN KEY (venue_id) REFERENCES Stadium (id),
-    FOREIGN KEY (home_team_id) REFERENCES Team (id),
-    FOREIGN KEY (guest_team_id) REFERENCES Team (id)
+    FOREIGN KEY (venue_id) REFERENCES Stadium (id)
+);
+
+CREATE TABLE IF NOT EXISTS GameTeam
+(
+    game_id INTEGER NOT NULL,
+    team_id INTEGER NOT NULL,
+    home    BOOLEAN NOT NULL,
+    PRIMARY KEY (game_id, team_id),
+    FOREIGN KEY (game_id) REFERENCES Game (id),
+    FOREIGN KEY (team_id) REFERENCES Team (id)
 );
 
 CREATE TABLE IF NOT EXISTS EquipmentType
 (
-    id   INTEGER NOT NULL AUTO_INCREMENT,
-    name VARCHAR(220),
+    id   INTEGER      NOT NULL AUTO_INCREMENT,
+    name VARCHAR(220) NOT NULL,
     PRIMARY KEY (id)
 );
 
 CREATE TABLE IF NOT EXISTS Equipment
 (
-    id              INTEGER NOT NULL AUTO_INCREMENT,
-    name            VARCHAR(220),
-    type_id         INTEGER NOT NULL,
+    id              INTEGER      NOT NULL AUTO_INCREMENT,
+    name            VARCHAR(220) NOT NULL,
+    type_id         INTEGER      NOT NULL,
     expiration_date DATETIME,
-    games_count     INTEGER NOT NULL,
-    is_available    BOOLEAN NOT NULL,
+    games_count     INTEGER      NOT NULL,
+    is_available    BOOLEAN      NOT NULL,
     PRIMARY KEY (id),
     FOREIGN KEY (type_id) REFERENCES EquipmentType (id)
 );
@@ -70,8 +89,8 @@ CREATE TABLE IF NOT EXISTS GameEquipment
 
 CREATE TABLE IF NOT EXISTS PlayerPositionType
 (
-    id   INTEGER NOT NULL AUTO_INCREMENT,
-    name VARCHAR(100),
+    id   INTEGER      NOT NULL AUTO_INCREMENT,
+    name VARCHAR(100) NOT NULL,
     PRIMARY KEY (id)
 );
 
@@ -87,11 +106,10 @@ CREATE TABLE IF NOT EXISTS PlayerPosition
 
 CREATE TABLE IF NOT EXISTS Player
 (
-    id         INTEGER NOT NULL AUTO_INCREMENT,
-    first_name VARCHAR(100),
-    last_name  VARCHAR(100),
-    team_id    INTEGER,
-    age        INTEGER,
+    id      INTEGER      NOT NULL AUTO_INCREMENT,
+    name    VARCHAR(512) NOT NULL,
+    team_id INTEGER,
+    age     INTEGER      NOT NULL,
     FOREIGN KEY (team_id) REFERENCES Team (id),
     PRIMARY KEY (id)
 );
@@ -99,8 +117,7 @@ CREATE TABLE IF NOT EXISTS Player
 CREATE TABLE IF NOT EXISTS Coach
 (
     id               INTEGER NOT NULL AUTO_INCREMENT,
-    first_name       VARCHAR(100),
-    last_name        VARCHAR(100),
+    name             VARCHAR(512),
     experience_years INTEGER,
     team_id          INTEGER,
     FOREIGN KEY (team_id) REFERENCES Team (id),
@@ -109,16 +126,15 @@ CREATE TABLE IF NOT EXISTS Coach
 
 CREATE TABLE IF NOT EXISTS OfficialRole
 (
-    id   INTEGER NOT NULL AUTO_INCREMENT,
-    name VARCHAR(100),
+    id   INTEGER      NOT NULL AUTO_INCREMENT,
+    name VARCHAR(100) NOT NULL,
     PRIMARY KEY (id)
 );
 
 CREATE TABLE IF NOT EXISTS Official
 (
-    id               INTEGER NOT NULL AUTO_INCREMENT,
-    first_name       VARCHAR(100),
-    last_name        VARCHAR(100),
+    id               INTEGER      NOT NULL AUTO_INCREMENT,
+    name             VARCHAR(512) NOT NULL,
     role_id          INTEGER,
     experience_years INTEGER,
     PRIMARY KEY (id),
