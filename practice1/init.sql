@@ -68,14 +68,22 @@ CREATE TABLE IF NOT EXISTS GameEquipment
     PRIMARY KEY (game_id, equipment_id)
 );
 
-CREATE TABLE IF NOT EXISTS PlayerPosition
+CREATE TABLE IF NOT EXISTS PlayerPositionType
 (
-    id   INTEGER                                                    NOT NULL AUTO_INCREMENT,
-    name VARCHAR(100)                                               NOT NULL,
-    type ENUM ('Нападающий', 'Полузащитник', 'Защитник', 'Вратарь') NOT NULL,
+    id   INTEGER NOT NULL AUTO_INCREMENT,
+    name VARCHAR(100),
     PRIMARY KEY (id)
 );
 
+
+CREATE TABLE IF NOT EXISTS PlayerPosition
+(
+    id      INTEGER      NOT NULL AUTO_INCREMENT,
+    name    VARCHAR(100) NOT NULL,
+    type_id INTEGER      NOT NULL,
+    PRIMARY KEY (id),
+    FOREIGN KEY (type_id) REFERENCES PlayerPositionType (id)
+);
 
 CREATE TABLE IF NOT EXISTS Player
 (
