@@ -1,0 +1,2 @@
+SHOW TABLES
+FROM dbd;
