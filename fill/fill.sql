@@ -32,7 +32,11 @@ VALUES ('Brazilian Serie A', 1, 1),
        ('Argentine Primera División', 7, 1),
        ('Primeira Liga', 8, 1),
        ('Eredivisie', 9, 1),
-       ('Liga MX', 10, 1);
+       ('Liga MX', 10, 1),
+       ('Brazilian Serie B', 1, 2),
+       ('Ligue 2', 4, 2),
+       ('Serie B', 5, 2),
+       ('Serie C', 5, 3);
 
 INSERT INTO Team (name, home_venue_id, league_id)
 VALUES ('Flamengo', 1, 1),
@@ -44,7 +48,8 @@ VALUES ('Flamengo', 1, 1),
        ('Boca Juniors', 7, 7),
        ('Benfica', 8, 8),
        ('Ajax', 9, 9),
-       ('Club América', 10, 10);
+       ('Club América', 10, 10),
+       ('Real Madrid', 3, 3);
 
 INSERT INTO Game (venue_id, start_time)
 VALUES (1, '2023-10-10 19:00:00'),
@@ -56,7 +61,8 @@ VALUES (1, '2023-10-10 19:00:00'),
        (7, '2023-10-16 18:00:00'),
        (8, '2023-10-17 19:00:00'),
        (9, '2023-10-18 21:00:00'),
-       (10, '2023-10-19 18:30:00');
+       (10, '2023-10-19 18:30:00'),
+       (3, '2023-10-11 20:00:00');
 
 INSERT INTO GameTeam (game_id, team_id, home)
 VALUES (1, 1, TRUE),
@@ -104,6 +110,18 @@ VALUES ('Adidas Ball', 1, '2024-01-01', 5, TRUE),
        ('Jersey Red Team', 7, '2024-11-01', 9, TRUE),
        ('Water Bottle Set', 10, '2024-08-01', 30, TRUE);
 
+INSERT INTO GameEquipment (game_id, equipment_id)
+VALUES (1, 1),
+       (1, 2),
+       (2, 3),
+       (3, 4),
+       (4, 5),
+       (5, 6),
+       (6, 7),
+       (7, 8),
+       (8, 9),
+       (9, 10);
+
 INSERT INTO PlayerPositionType (name)
 VALUES ('Defense'),
        ('Midfield'),
@@ -132,7 +150,8 @@ VALUES ('Lucas Silva', 1, 25),
        ('Diego Pérez', 7, 22),
        ('João Fernandes', 8, 26),
        ('Daan de Vries', 9, 29),
-       ('Luis Gómez', 10, 23);
+       ('Luis Gómez', 10, 23),
+       ('Alex Gómez', 10, 19);
 
 INSERT INTO Coach (name, experience_years, team_id)
 VALUES ('Roberto Almeida', 10, 1),
@@ -186,4 +205,5 @@ VALUES (1, 1, 1, 2, 0, 1),
        (7, 7, 7, 1, 0, 2),
        (8, 8, 8, 0, 1, 3),
        (9, 9, 9, 2, 0, 0),
-       (10, 10, 10, 0, 0, 1);
+       (10, 10, 10, 0, 0, 1),
+       (11, 10, 8, 0, 0, 1);
