@@ -49,7 +49,7 @@ VALUES ('Flamengo', 1, 1),
        ('Benfica', 8, 8),
        ('Ajax', 9, 9),
        ('Club América', 10, 10),
-       ('Real Madrid', 3, 3);
+       ('Real Madrid', NULL, 3);
 
 INSERT INTO Game (venue_id, start_time)
 VALUES (1, '2023-10-10 19:00:00'),
