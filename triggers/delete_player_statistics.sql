@@ -1,7 +1,9 @@
+DROP TRIGGER IF EXISTS DeletePlayerStatistics;
+
 DELIMITER //
 
 CREATE TRIGGER DeletePlayerStatistics
-    AFTER DELETE
+    BEFORE DELETE
     ON Player
     FOR EACH ROW
 BEGIN
@@ -9,3 +11,7 @@ BEGIN
 END //
 
 DELIMITER ;
+
+DELETE
+FROM Player
+WHERE id = 1;

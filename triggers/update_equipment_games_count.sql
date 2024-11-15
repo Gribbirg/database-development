@@ -1,3 +1,5 @@
+DROP TRIGGER IF EXISTS UpdateEquipmentGamesCount;
+
 DELIMITER $$
 
 CREATE TRIGGER UpdateEquipmentGamesCount
@@ -11,3 +13,6 @@ BEGIN
 END$$
 
 DELIMITER ;
+
+INSERT INTO GameEquipment (game_id, equipment_id)
+VALUES (2, 1);
