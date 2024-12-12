@@ -11,8 +11,8 @@ FROM Player;
 
 SELECT country_id,
        name                                                               AS stadium_name,
-       capacity,
-       DENSE_RANK() OVER (PARTITION BY country_id ORDER BY capacity DESC) AS capacity_rank
+       max_capacity,
+       DENSE_RANK() OVER (PARTITION BY country_id ORDER BY max_capacity DESC) AS capacity_rank
 FROM Stadium;
 
 SELECT team_id,

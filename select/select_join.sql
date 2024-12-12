@@ -1,3 +1,11 @@
+SELECT Player.id,
+       Player.name,
+       Player.age,
+       Coach.experience_years
+FROM Player
+         NATURAL JOIN Coach;
+
+
 SELECT Coach.name AS coach_name,
        Team.name  AS team_name
 FROM Coach

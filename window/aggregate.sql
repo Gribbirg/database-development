@@ -11,7 +11,7 @@ SELECT team_id,
 FROM Player;
 
 SELECT country_id,
-       MIN(capacity) OVER (PARTITION BY country_id) AS min_capacity
+       MIN(max_capacity) OVER (PARTITION BY country_id) AS min_capacity
 FROM Stadium;
 
 SELECT team_id,
